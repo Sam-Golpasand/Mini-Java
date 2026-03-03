@@ -156,6 +156,10 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
                 expression.
          */
 
+        Number result = values.get(printStatement.expression);
+        System.out.println(printStatement.prefix + result);
+
+
     }
 
     @Override
