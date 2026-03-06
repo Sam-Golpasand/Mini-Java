@@ -102,9 +102,6 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
      * (lambda expression), that represents the semantics of that operation. These
      * define what happens when the operator needs to be executed.<p>
      *
-     * TODO Assignment 5a: This map and the functions above need to be extended in Assignment 6a
-     *      (all operations with the respective types required in assignment must be defined above
-     *      and added to the mapping below).
      */
     final private Map<Operator, Map<Type, Function<List<Number>,Number>>> operatorFunctions = Map.ofEntries(
             entry(PLUS2, Map.ofEntries(
@@ -185,6 +182,17 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
                 and the values of these "components" can then be obtained by
                 looking them up in the values Map.
          */
+
+        int expressionValue = (int)values.get(whileLoop.expression);
+
+        while (expressionValue >= 0) {
+            try {
+                whileLoop.statement.accept(this);
+                whileLoop.expression.accept(this);
+            } finally {
+                expressionValue = (int)values.get(whileLoop.expression);
+            }
+        }
 
 
     }
