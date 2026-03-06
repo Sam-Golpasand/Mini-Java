@@ -192,7 +192,6 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
             whileLoop.expression.accept(this);
             whileLoopExpressionValue = values.get(whileLoop.expression).intValue();
         }
-
     }
 
     @Override
