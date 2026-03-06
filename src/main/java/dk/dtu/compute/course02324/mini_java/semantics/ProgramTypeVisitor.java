@@ -84,6 +84,15 @@ public class ProgramTypeVisitor extends ProgramVisitor {
                 checking that the expression is of type integer. If not,
                 the code must add a problem to the problem list.
          */
+        Type whileLoopExpressionType = typeMapping.get(whileLoop.expression);
+        if (whileLoopExpressionType == null) {
+            problems.add("While loop expression does not have a type.");
+        }
+        else if
+        (!INT.equals(whileLoopExpressionType)) {
+            problems.add("Expression of while loop needs to result in INT.");
+        }
+
 
         whileLoop.statement.accept(this);
     }
