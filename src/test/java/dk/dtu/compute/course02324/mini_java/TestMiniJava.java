@@ -127,6 +127,23 @@ public class TestMiniJava{
     }
 
     @Test
+    public void testProgramTypeProblems() {
+        Statement statement =
+                new Sequence(
+                        new WhileLoop(
+                                Var("d"),
+                                new Sequence()
+                        )
+                );
+
+        ptv.visit(statement);
+
+        if (ptv.problems.isEmpty()) {
+            fail("The variable is undefined");
+        }
+    }
+
+    @Test
     public void testWronglyTypedProgram() {
         int i;
         int j = i = 2 + (i = 3) ;
@@ -338,6 +355,49 @@ public class TestMiniJava{
                 assertEquals(y, pev.values.get(var), "Value of variable j should be " + y + ".");
             } else {
                 fail("A non-existing variable " + var.name + " occurred in evaluation of program.");
+            }
+        }
+        assertEquals(0, variables.size(), "Some variables have not been evaluated");
+    }
+
+    @Test
+    public void testAdditionalLambdaOperators() {
+       int a = 6 * 9;
+       float b = 4.20f * 6.9f;
+       float c = 6.7f % 3.2f;
+
+       Sequence statement = Sequence(
+        Declaration(INT, Var("a"),
+        OperatorExpression(MULT, Literal(6), Literal(9))
+        ),
+        PrintStatement("6 * 9:", Var("a")),
+        Declaration(FLOAT, Var("b"), OperatorExpression(MULT, Literal(4.20f), Literal(6.9f))),
+        PrintStatement("4.20f * 6.9f", Var("b")),
+        Declaration(FLOAT, Var("c"), OperatorExpression(MOD, Literal(6.7f), Literal(3.2f))),
+        PrintStatement("6.7f % 3.2f", Var("c"))
+       );
+
+       ptv.visit(statement);
+
+       if (!ptv.problems.isEmpty()) {
+        fail("The type visitor found some problems");
+       }
+
+       pev.visit(statement);
+
+
+        Set<String> variables = new HashSet<>(List.of("a", "b", "c"));
+        for (Var var: ptv.variables) {
+            variables.remove(var.name);
+
+            if (var.name.equals("a")) {
+                assertEquals(a, pev.values.get(var), "The value of variable a should be " + a + ".");
+            } else if (var.name.equals("b")) {
+                assertEquals(b, pev.values.get(var), "the value of variable b should be " + b + ".");
+            } else if (var.name.equals("c")) {
+                assertEquals(c, pev.values.get(var), "the value of variable c should be " + c + ".");
+            } else {
+                fail("A variable which shoundt be there is there " + var.name);
             }
         }
         assertEquals(0, variables.size(), "Some variables have not been evaluated");
