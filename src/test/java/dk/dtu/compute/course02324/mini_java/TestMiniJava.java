@@ -403,4 +403,31 @@ public class TestMiniJava{
         assertEquals(0, variables.size(), "Some variables have not been evaluated");
     }
 
+
+    @Test
+    public void typeVisitorAdditionalTest1() {
+        // try to add an INT and a FLOAT together
+        Statement statement = Sequence(
+                Declaration(INT, Var("i"), Literal(1)),
+                Declaration(FLOAT, Var("f"), Literal(1.5f)),
+                Declaration(INT, Var("res"), OperatorExpression(PLUS2, Var("i"), Var("f")))
+        );
+        ptv.visit(statement);
+
+        if (ptv.problems.isEmpty()) {
+            fail("Failed to detect mismatched operand types in OperatorExpression.");
+        }
+    }
+
+    @Test
+    public void typeVisitorAdditionalTest2() {
+        // declare an INT but try to initialize it with a FLOAT litteral
+        Statement statement = Declaration(INT, Var("x"), Literal(1.5f));
+        ptv.visit(statement);
+
+        if (ptv.problems.isEmpty()) {
+            fail("Failed to detect type mismatch in Declaration.");
+        }
+    }
+
 }
