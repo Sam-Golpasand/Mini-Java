@@ -84,6 +84,25 @@ public class ProgramTypeVisitor extends ProgramVisitor {
     }
 
     @Override
+    public void visit(IfThenElse ifThenElse) {
+        ifThenElse.expression.accept(this);
+
+        // Same typechecking as while loop.
+        Type type = typeMapping.get(ifThenElse.expression);
+        
+        if (type == null) {
+            problems.add("The expression of the if statement is null");
+        }
+        
+        if (!INT.equals(type)) {
+            problems.add("The expression of the if statement is not an integer");
+        }
+
+        ifThenElse.thenStatement.accept(this);
+        ifThenElse.elseStatement.accept(this);
+    }
+
+    @Override
     public void visit(Assignment assignment) {
         assignment.expression.accept(this);
         if (variables.contains(assignment.variable)) {

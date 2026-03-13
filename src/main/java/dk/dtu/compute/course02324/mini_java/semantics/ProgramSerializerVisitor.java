@@ -2,8 +2,6 @@ package dk.dtu.compute.course02324.mini_java.semantics;
 
 import dk.dtu.compute.course02324.mini_java.model.*;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class ProgramSerializerVisitor extends ProgramVisitor  {
 
@@ -37,7 +35,7 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
 
             // The following is just a minor detail:
             // Making sure that while loops do not end with a semicolon
-            if (statement instanceof WhileLoop) {
+            if (statement instanceof WhileLoop || statement instanceof IfThenElse) {
                 result.append(System.lineSeparator());
             } else {
                 result.append(";" + System.lineSeparator());
@@ -85,6 +83,11 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
         indentLevel--;
         addIndentation();
         result.append("}");
+    }
+
+    @Override
+    public void visit(IfThenElse ifThenElse) {
+        // Left empty because that shit is too weird lol
     }
 
     @Override

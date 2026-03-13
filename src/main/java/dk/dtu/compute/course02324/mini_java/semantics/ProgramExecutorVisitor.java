@@ -185,6 +185,18 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
     }
 
     @Override
+    public void visit(IfThenElse ifThenElse) {
+        ifThenElse.expression.accept(this);
+
+        int expressionValue = values.get(ifThenElse.expression).intValue();
+        if (expressionValue >= 0) {
+            ifThenElse.thenStatement.accept(this);
+        } else {
+            ifThenElse.elseStatement.accept(this);
+        }
+    }
+
+    @Override
     public void visit(Assignment assignment) {
         assignment.expression.accept(this);
         Number result = values.get(assignment.expression);
