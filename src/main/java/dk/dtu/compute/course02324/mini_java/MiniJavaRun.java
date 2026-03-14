@@ -280,6 +280,34 @@ public class MiniJavaRun {
 
         printTypeEvaluate(statement5);
 
+        // code to see if our IfThenElse works
+        System.out.println("Result provided by Java");
+        int num = -5;
+        int abs;
+        if (num >= 0) {
+            abs = num;
+        } else {
+            abs = -num;
+        }
+        System.out.println("num = " + num);
+        System.out.println("abs = " + abs);
+        System.out.println();
+
+
+        Statement ifElseStatement = Sequence(
+                Declaration(INT, Var("num"), Literal(-5)),
+                Declaration(INT, Var("abs")),
+                IfThenElse(
+                        Var("num"), // Condition: num >= 0
+                        Assignment(Var("abs"), Var("num")), // Then: abs = num
+                        Assignment(Var("abs"), OperatorExpression(MINUS1, Var("num"))) // Else: abs = -num
+                ),
+                PrintStatement("result num = ", Var("num")),
+                PrintStatement("result abs = ", Var("abs"))
+        );
+
+        printTypeEvaluate(ifElseStatement);
+
         System.out.println("And now some syntactially wrong examples (crashing) when building statement!");
 
         Statement statement6 = new Sequence(

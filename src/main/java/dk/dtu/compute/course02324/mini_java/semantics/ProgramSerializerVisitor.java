@@ -87,7 +87,19 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
 
     @Override
     public void visit(IfThenElse ifThenElse) {
-        // Left empty because that shit is too weird lol
+        result.append("if ( ");
+        ifThenElse.expression.accept(this);
+        result.append(" >= 0 ) {" + System.lineSeparator());
+        indentLevel++;
+        ifThenElse.thenStatement.accept(this);
+        indentLevel--;
+        addIndentation();
+        result.append("} else {" + System.lineSeparator());
+        indentLevel++;
+        ifThenElse.elseStatement.accept(this);
+        indentLevel--;
+        addIndentation();
+        result.append("}");
     }
 
     @Override
