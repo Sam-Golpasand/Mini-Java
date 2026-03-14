@@ -170,14 +170,14 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
         whileLoop.expression.accept(this);
 
 
-        int expressionValue = (int)values.get(whileLoop.expression);
+        int expressionValue = values.get(whileLoop.expression).intValue();
 
         while (expressionValue >= 0) {
             try {
                 whileLoop.statement.accept(this);
                 whileLoop.expression.accept(this);
             } finally {
-                expressionValue = (int)values.get(whileLoop.expression);
+                expressionValue = values.get(whileLoop.expression).intValue();
             }
         }
 
